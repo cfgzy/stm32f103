@@ -1,0 +1,29 @@
+# Keil MDK 编译输出
+OBJ/
+*.o
+*.d
+*.crf
+*.axf
+*.hex
+*.bin
+*.htm
+*.lnp
+*.sct
+*.build_log.htm
+*.dep
+*.iex
+
+# UV4 调试配置
+*.uvguix.*
+JLinkSettings.ini
+EventRecorderStub.scvd
+
+# IDE 临时文件
+DebugConfig/
+*.bak
+*.lst
+*.map
+
+# 系统文件
+Thumbs.db
+.DS_Store
