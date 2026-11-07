@@ -1,0 +1,63 @@
+| 指令                 | 功能简述              | 关键参数 / 备注                                                     |
+| :----------------- | :---------------- | :------------------------------------------------------------ |
+| `AT+WMODE`         | 查询/设置 WiFi 工作模式   | `MODE`: 0=关闭, 1=STA, 2=AP, 3=AP+STA                           |
+| `AT+WDISCONNECT`   | 断开 WiFi 连接        | 等效于先关闭 WiFi 再恢复先前模式                                           |
+| `AT+WSCAN`         | 扫描 WiFi 列表        | 可带过滤参数 `ssid,mac,channel,rssi`                                |
+| `AT+WSCANACTIVE`   | 主动模式扫描指定 SSID     | 仅扫描并返回指定名称的 AP                                                |
+| `AT+WSDHCP`        | 查询/设置 STA 模式 DHCP | `MODE`: 0=静态 IP(需设 IP/MASK/GATEWAY), 1=DHCP                   |
+| `AT+WJAP`          | 连接 AP / 查询联网信息    | `ssid,pwd[,bssid]`；查询时若 SSID/密码含逗号可能解析错误                      |
+| `AT+STAINFO`       | 查询 WiFi 连接信息（推荐）  | 多行返回，避免逗号解析问题，含状态/SSID/BSSID/IP 等                             |
+| `AT+WJEAP`         | 连接企业认证热点          | `type`: 1=PEAP, 2=TLS, 3=TTLS, 4=FAST                         |
+| `AT+WAUTOCONN`     | 上电自动重连 WiFi       | `status`: 0=禁用, 1=使能；建议先 `AT+WJAP` 验证成功再保存                    |
+| `AT+WAPDHCP`       | 查询/设置 AP 模式 DHCP  | `mode,start_ip,end_ip,gateway`                                |
+| `AT+WAP`           | 查询/设置 AP 参数       | `ssid,pwd,channel,max_conn,ssid_hidden`                       |
+| `AT+WAPINFO`       | 查询 AP 信息（中间件）     | 含客户端数量、客户端 MAC/IP 列表                                          |
+| `AT+PING`          | Ping 测试           | `addr[,count]`；`count` 可设为 `loop` 一直 Ping                     |
+| `AT+CIPSTAMAC_DEF` | 查询/设置 STA MAC 地址  | 格式：小写无分隔，如 `84f3ebdd9e63`                                     |
+| `AT+WCOUNTRY`      | 查询/设置 WiFi 国家码    | 0=默认, 1=JP, 4=US, 5=CN, 6=HK, 7=TW 等                          |
+| `AT+WCONFIG`       | 开启/关闭手机配网         | `status`: 0=关闭, 1=WiFi 配网, 2=蓝牙配网, 3=AirKiss, 9=BluFi, 10=WPS |
+| `AT+WSCANOPT`      | 筛选扫描结果显示字段        | 按 bit 控制是否显示 SSID/CH/SECURITY/RSSI/MAC                        |
+| `AT+WRSSI`         | 查询 WiFi 连接信号强度    | 返回当前 RSSI 值，如 `-50`                                           |
+| `AT+BLUFISEND`     | 发送蓝牙配网自定义数据       | 长数据模式，收到 `>` 后输入指定长度数据                                        |
+
+
+
+
+| 指令                  | 功能简述                     | 关键参数 / 备注                                                                                  |
+| :------------------ | :----------------------- | :----------------------------------------------------------------------------------------- |
+| `+EVENT:SocketDown` | **URC**：收到 Socket 数据     | `ConID,length[,data]`；主动模式直接带 data，被动模式需读取                                                 |
+| `+EVENT:SocketSeed` | **URC**：TCP Server 收到新连接 | `seed ConID, server ConID`                                                                 |
+| `AT+SOCKET`         | 创建 Socket 连接             | `type`: 1=UDP Server, 2=UDP Client, 3=TCP Server, 4=TCP Client, 6=SSL Server, 7=SSL Client |
+| `AT+SOCKET2`        | 创建 Socket 连接（扩展格式）       | 参数顺序与 `AT+SOCKET` 略有不同，支持绑定本地端口                                                            |
+| `AT+SOCKETSEND`     | Socket 发送数据（长数据模式）       | 收到 `>` 后输入任意数据，超长自动分包（默认 >1024 字节分包）                                                       |
+| `AT+SOCKETSENDLINE` | Socket 发送数据（单行模式）        | 一行完成，总长度受指令长度限制（默认 ≤1023 字节）                                                               |
+| `AT+SOCKETSENDHEX`  | Socket 发送 HEX 数据（单行）     | data 为字符串形式的 hex，如 `3132` 表示 0x31 0x32                                                     |
+| `AT+SOCKETREAD`     | 从 Socket 读取数据            | 按包读取；TCP Server 需通过 seed 连接收发                                                              |
+| `AT+SOCKETDEL`      | 删除指定 Socket 连接           | 删除后该连接缓存数据也会被清空                                                                            |
+| `AT+SOCKETRECVCFG`  | 设置 Socket 接收模式           | `0`=被动模式（仅 URC 提示），`1`=主动模式（直接打印数据）                                                        |
+| `AT+SOCKETTT`       | 进入 Socket 透传模式           | 仅单 Client/单 Server+Seed/单 UDP 时可进入；输入 `+++` 退出                                             |
+| `AT+SOCKETAUTOTT`   | 自动进入 Socket 透传配置         | 上电后自动连 WiFi → 自动建 Socket → 自动进透传，需配合 `AT+WAUTOCONN`                                        |
+| `AT+SSLCRET`        | 查询/设置 SSL 证书             | `type`: 1=CA 根证书, 2=客户端公钥, 3=客户端私钥                                                         |
+| `AT+WDOMAIN`        | 域名解析                     | 返回域名对应的 IP 地址                                                                              |
+| `AT+WDNS`           | 查询/设置 DNS 服务器            | 可设置主、备 DNS IP                                                                              |
+
+
+
+
+
+
+| 指令                 | 功能简述                | 关键参数 / 备注                                                                                  |
+| :----------------- | :------------------ | :----------------------------------------------------------------------------------------- |
+| `AT+MQTT`          | MQTT 配置与连接          | 分 key 设置：`1`=域名/IP, `2`=端口, `3`=连接方式(1=TCP/2=SSL), `4`=ClientID, `5`=用户名, `6`=密码, `7`=遗嘱消息 |
+| `AT+MQTTVER`       | 查询/设置 MQTT 协议版本     | `3`=MQTT 3.1, `4`=MQTT 3.1.1                                                               |
+| `AT+MQTTBUF`       | 查询/设置收发缓冲区大小        | `sendBufSize,reciveBufSize`；下次连接生效                                                         |
+| `AT+MQTTKEEPALIVE` | 查询/设置心跳间隔           | `mqttKeepAliveInterval,mqttTcpKeepAliveInterval`（单位：秒）                                     |
+| `AT+MQTTCRET`      | 查询/设置 MQTT SSL 证书   | 同 `AT+SSLCRET`，仅保存在 RAM，重启失效                                                               |
+| `AT+MQTTDISCONN`   | 断开 MQTT 连接          | 立即断开当前连接                                                                                   |
+| `AT+MQTTPUB`       | 发布 MQTT 消息（单行）      | `topic,qos,Retained,payload`                                                               |
+| `AT+MQTTPUBRAW`    | 发布指定长度 MQTT 消息（长数据） | 收到 `>` 后输入指定长度数据，适合 payload 较长或含特殊字符                                                       |
+| `AT+MQTTSUB`       | 订阅 MQTT 主题          | `topic,qos`；默认最多支持 5 条订阅                                                                   |
+| `AT+MQTTUNSUB`     | 取消订阅 MQTT 主题        | 取消已订阅的指定 topic                                                                             |
+
+
+

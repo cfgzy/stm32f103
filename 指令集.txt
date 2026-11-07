@@ -1,0 +1,75 @@
+AT                  // 测试通信，返回 OK
+AT+RST              // 重启模块，等待 ready
+ATE0                // 关闭回显（减少串口乱码）
+AT+WMODE=1          // 设置为 STA 模式（客户端）
+AT+WJAP="Ace","20030622" // 连接WiFi，等待 WIFI GOT IP
+
+
+// 配置MQTT服务器地址（巴法云域名）
+AT+MQTT=1,"mqtt.bemfa.com"  // 设置服务器地址
+OK
+// 配置MQTT端口号（巴法云非加密端口）
+AT+MQTT=2,9501             // 设置服务器端口
+OK
+// 配置连接方式（1=TCP）
+AT+MQTT=3,1                // 设置连接方式
+OK
+// 配置ClientID（巴法云私钥）
+AT+MQTT=4,"768166ef5bdc47a0be78f4e67514b277"  // 设置ClientID
+OK
+// 配置MQTT用户名（巴法云无需用户名，留空）
+AT+MQTT=5,""               // 设置用户名（留空）
+OK
+// 配置MQTT密码（巴法云无需密码，留空）
+AT+MQTT=6,""               // 设置密码（留空）
+OK
+// 查询MQTT配置
+AT+MQTT?                   // 查询当前配置
++MQTT:0,mqtt.bemfa.com,9501,1,768166ef5bdc47a0be78f4e67514b277,,,,0,0,  // 返回配置
+OK
+// 连接MQTT服务器
+AT+MQTT                   // 连接MQTT服务器（指导书格式）
+OK
+// MQTT连接成功
+// 订阅控制主题（esp02cmd）
+AT+MQTTSUB="esp02cmd",0    // 订阅控制主题，QoS=0
+OK
+// 订阅数据上报主题（esp02up）
+AT+MQTTSUB="esp02up",1     // 订阅数据上报主题，QoS=1
+OK
+// 查询订阅状态
+AT+MQTTSUB?               // 查询已订阅的主题
+3,esp02cmd               // 订阅成功
+3,esp02up                // 订阅成功
+OK
+
+
+
+
+
+// 巴法云推送指令格式：+EVENT:SocketDown,0,topic,data
+// 示例：接收控制指令（如：ON/OFF）
+// 假设巴法云推送：+EVENT:SocketDown,0,esp02cmd,ON
+// ESP-01S通过串口转发给STM32：+EVENT:SocketDown,0,esp02cmd,ON
+
+
+
+
+STM32代码示例（伪代码）
+
+void mqtt_publish() {
+    const char* payload = "温度:25.5 湿度:60";  // UTF-8编码
+    printf("AT+MQTTPUB=\"esp02up\",0,0,%s\r\n", payload);  // 发送AT指令
+}
+
+int main() {
+    // 初始化串口
+    // 连接WiFi
+    // 连接MQTT
+    // 订阅主题
+    mqtt_publish();  // 发布数据
+    return 0;
+}
+
+
+
