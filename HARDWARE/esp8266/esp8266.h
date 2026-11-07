@@ -4,10 +4,10 @@
     #include "sys.h"
 
     // ================== 常用宏定义（用户需根据实际情况修改） ==================
-    #define WIFI_SSID         "aaa"                     // WiFi 名称
-    #define WIFI_PASSWORD     "1111"                // WiFi 密码
+    #define WIFI_SSID         "Ace"                     // WiFi 名称
+    #define WIFI_PASSWORD     "20030622"                // WiFi 密码
     // 注意：这里是巴法云的私钥，作为Client ID使用
-    #define MQTT_CLIENT_ID    "1111"
+    #define MQTT_CLIENT_ID    "768166ef5bdc47a0be78f4e67514b277"
     #define MQTT_BROKER       "mqtt.bemfa.com"          // MQTT 服务器地址
     #define MQTT_PORT         "9501"                    // MQTT 端口号
     #define MQTT_PUB_TOPIC    "esp02up"                 // 温湿度上报主题
